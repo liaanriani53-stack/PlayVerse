@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Playverse Quiz by Liyaa👑</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+margin:0;
+font-family:Arial;
+color:#fff;
+text-align:center;
+overflow:hidden;
+
+/* 🤎 BACKGROUND COKLAT SOFT */
+background:linear-gradient(135deg,#3e2723,#5d4037,#8d6e63);
+}
+
+/* BOX */
+#box{
+background:rgba(255,255,255,0.1);
+margin:40px;
+padding:20px;
+border-radius:20px;
+backdrop-filter:blur(10px);
+box-shadow:0 0 20px #a1887f;
+position:relative;
+z-index:2;
+}
+
+/* tombol */
+button{
+padding:12px 20px;
+margin:10px;
+border:none;
+border-radius:12px;
+background:#d7ccc8;
+color:#3e2723;
+font-weight:bold;
+}
+
+/* 🤎 HUJAN NAMA */
+.nameDrop{
+position:fixed;
+top:-50px;
+color:#d7ccc8;
+font-weight:bold;
+text-shadow:0 0 10px #fff;
+animation:fall linear infinite;
+pointer-events:none;
+}
+
+@keyframes fall{
+to{
+transform:translateY(110vh);
+}
+}
+</style>
+</head>
+
+<body>
+
+<div id="box">
+<h2 id="question"></h2>
+<div id="answers"></div>
+<p>Score: <span id="score">0</span></p>
+</div>
+
+<script>
+
+// 🤎 HUJAN NAMA
+for(let i=0;i<30;i++){
+let n=document.createElement("div");
+n.classList.add("nameDrop");
+n.innerText="By Liyaa👑";
+n.style.left=Math.random()*100+"%";
+n.style.fontSize=(12+Math.random()*18)+"px";
+n.style.animationDuration=(5+Math.random()*5)+"s";
+document.body.appendChild(n);
+}
+
+// QUIZ KALIMAT SUSAH
+let q=0;
+let score=0;
+
+let quiz=[
+
+{q:"Seorang siswa membaca 20 halaman buku setiap hari. Jika ia sudah membaca selama 6 hari, berapa total halaman yang telah dibaca?",a:["100 halaman","110 halaman","120 halaman","130 halaman"],c:2},
+{q:"Sebuah toko memberikan diskon 25% untuk sebuah barang seharga Rp200.000. Berapa harga setelah diskon?",a:["Rp140.000","Rp150.000","Rp160.000","Rp170.000"],c:1},
+{q:"Jika 3 pensil harganya Rp6.000, maka berapa harga 10 pensil?",a:["Rp18.000","Rp20.000","Rp22.000","Rp24.000"],c:1},
+{q:"Ani memiliki 50 permen dan membagikannya kepada 5 temannya secara sama rata. Berapa permen yang diterima setiap teman?",a:["8","9","10","11"],c:2},
+{q:"Sebuah mobil menempuh jarak 60 km dalam 2 jam. Berapa kecepatan rata-rata mobil tersebut?",a:["20 km/jam","25 km/jam","30 km/jam","35 km/jam"],c:2},
+
+{q:"Jika sebuah kelas memiliki 30 siswa dan 12 di antaranya perempuan, berapa jumlah siswa laki-laki?",a:["16","17","18","19"],c:2},
+{q:"Harga sebuah buku adalah Rp15.000. Jika membeli 4 buku, berapa total harga yang harus dibayar?",a:["Rp50.000","Rp55.000","Rp60.000","Rp65.000"],c:2},
+{q:"Seorang pelari menempuh jarak 100 meter dalam 20 detik. Berapa kecepatan pelari tersebut per detik?",a:["4 m/s","5 m/s","6 m/s","7 m/s"],c:1},
+{q:"Jika 1 jam = 60 menit, berapa menit dalam 3,5 jam?",a:["180","200","210","220"],c:2},
+{q:"Sebuah persegi memiliki sisi 8 cm. Berapa luasnya?",a:["64 cm²","56 cm²","48 cm²","72 cm²"],c:0},
+
+{q:"Seorang siswa mendapatkan nilai 80, 85, dan 90. Berapa rata-ratanya?",a:["82","83","85","88"],c:1},
+{q:"Jika sebuah angka dikali 4 hasilnya 64, berapa angka tersebut?",a:["14","15","16","17"],c:2},
+{q:"Sebuah keranjang berisi 24 apel, diambil 8 apel. Berapa sisa apel?",a:["14","15","16","17"],c:2},
+{q:"Jika 1 lusin = 12 buah, berapa 3 lusin?",a:["24","30","36","40"],c:2},
+{q:"Seorang siswa menabung Rp10.000 setiap hari selama 7 hari. Berapa total tabungannya?",a:["Rp60.000","Rp70.000","Rp80.000","Rp90.000"],c:1},
+
+{q:"Jika suhu awal 30°C turun 5°C, berapa suhu sekarang?",a:["20°C","22°C","25°C","28°C"],c:2},
+{q:"Sebuah jam menunjukkan pukul 14.00. Jika ditambah 3 jam, menjadi pukul berapa?",a:["16.00","17.00","18.00","19.00"],c:1},
+{q:"Jika 10 buku dibagi ke 2 orang sama rata, masing-masing dapat berapa?",a:["4","5","6","7"],c:1},
+{q:"Seorang siswa memiliki 100 ribu dan membeli barang seharga 65 ribu. Berapa sisa uangnya?",a:["30 ribu","35 ribu","40 ribu","45 ribu"],c:1},
+{q:"Jika panjang sebuah tali 200 cm dan dipotong menjadi 4 bagian sama panjang, berapa panjang tiap bagian?",a:["40 cm","45 cm","50 cm","55 cm"],c:2},
+
+{q:"Jika 5×6 = 30, maka 30 ÷ 5 = ?",a:["5","6","7","8"],c:1},
+{q:"Seorang guru memiliki 40 buku dan membagikan 8 buku. Berapa sisa buku?",a:["30","32","34","36"],c:1},
+{q:"Jika 1 minggu = 7 hari, berapa hari dalam 4 minggu?",a:["26","27","28","29"],c:2},
+{q:"Jika 2 kg = 2000 gram, maka 5 kg = ?",a:["3000 gram","4000 gram","5000 gram","6000 gram"],c:2},
+{q:"Seorang siswa berjalan 2 km setiap hari selama 5 hari. Berapa total jarak?",a:["8 km","9 km","10 km","11 km"],c:2}
+
+];
+
+function loadQ(){
+if(q>=quiz.length){
+document.getElementById("box").innerHTML=
+"<h1>🤎 SELESAI!</h1><h2>Score: "+score+"/25</h2>";
+return;
+}
+
+document.getElementById("question").innerText=quiz[q].q;
+
+let ans="";
+quiz[q].a.forEach((item,i)=>{
+ans+=`<button onclick="answer(${i})">${item}</button>`;
+});
+
+document.getElementById("answers").innerHTML=ans;
+}
+
+function answer(i){
+if(i==quiz[q].c){score++;}
+document.getElementById("score").innerText=score;
+q++;
+loadQ();
+}
+
+loadQ();
+
+</script>
+
+</body>
+</html>
